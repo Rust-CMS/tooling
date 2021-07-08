@@ -1,0 +1,25 @@
+version: '3'
+services:
+  backend:
+    build: https://github.com/Rust-CMS/rcms.git
+    ports:
+      - "9090:9090"
+    environment: 
+      - APP_MYSQL_USERNAME=root
+      - APP_MYSQL_PASSWORD=password
+      - APP_MYSQL_URL=rcms-db
+      - APP_MYSQL_DATABASE=rustcms
+      - APP_MYSQL_PORT=3306
+      - APP_BIND_ADDRESS=0.0.0.0
+      - APP_BIND_PORT=9090
+    command: ["./wait-for-it.sh", "rcms-db:3306", "-t", "0", "--", "rcms"]
+  # This section here is optional if you have your own database. We use this for the time being.
+  db:
+    container_name: rcms-db
+    image: mariadb:latest
+    # Explicit ports are for debugging. Can be removed.
+    ports:
+      - "9095:3306"
+    environment: 
+      - MARIADB_ROOT_PASSWORD=password
+      - MARIADB_DATABASE=rustcms
