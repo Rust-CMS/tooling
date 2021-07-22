@@ -1,9 +1,16 @@
 version: '3'
 services:
-  backend:
-    build: https://github.com/Rust-CMS/rcms.git
+  frontend:
+    build: https://github.com/Rust-CMS/dashboard-cms.git#v0.1.0
+    args: 
+      - APIURL = http://localhost:8070/v1/
     ports:
-      - "9090:9090"
+      - "8080:8080"
+    depends_on: backend
+  backend:
+    build: https://github.com/Rust-CMS/rcms.git#v0.1.0
+    ports:
+      - "80:80"
     environment: 
       - APP_MYSQL_USERNAME=root
       - APP_MYSQL_PASSWORD=password
@@ -11,7 +18,7 @@ services:
       - APP_MYSQL_DATABASE=rustcms
       - APP_MYSQL_PORT=3306
       - APP_BIND_ADDRESS=0.0.0.0
-      - APP_BIND_PORT=9090
+      - APP_BIND_PORT=80
     command: ["./wait-for-it.sh", "rcms-db:3306", "-t", "0", "--", "rcms"]
   # This section here is optional if you have your own database. We use this for the time being.
   db:
