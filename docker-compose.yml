@@ -10,7 +10,7 @@ services:
     depends_on: 
       - backend
   backend:
-    build: https://github.com/Rust-CMS/rcms.git#v0.1.0
+    image: ghcr.io/rust-cms/rcms:v0.1.0
     ports:
       - "80:80"
     environment: 
