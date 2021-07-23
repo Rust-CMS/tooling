@@ -9,6 +9,7 @@ services:
       - "8080:8080"
     depends_on: 
       - backend
+    restart: always
   backend:
     image: ghcr.io/rust-cms/rcms:v0.1.0
     ports:
@@ -22,6 +23,7 @@ services:
       - APP_BIND_ADDRESS=0.0.0.0
       - APP_BIND_PORT=80
     command: ["./wait-for-it.sh", "rcms-db:3306", "-t", "0", "--", "rcms"]
+    restart: always
   # This section here is optional if you have your own database. We use this for the time being.
   db:
     container_name: rcms-db
@@ -32,3 +34,4 @@ services:
     environment: 
       - MARIADB_ROOT_PASSWORD=password
       - MARIADB_DATABASE=rustcms
+    restart: always
