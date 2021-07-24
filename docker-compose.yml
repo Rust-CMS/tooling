@@ -35,3 +35,5 @@ services:
       - MARIADB_ROOT_PASSWORD=password
       - MARIADB_DATABASE=rustcms
     restart: always
+    volumes: 
+      - /var/lib/mysql
