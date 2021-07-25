@@ -1,7 +1,5 @@
 # How to Install Radical
 
----
-
 ## Step 1
 
 SSH on to a server of your choice. (Can be as low as 1 vCPU and 512 MB of ram. [rustcms.org](http://rustcms.org) runs on 2 vCPUs and 1 GB of RAM)
