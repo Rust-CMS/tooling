@@ -11,7 +11,7 @@ services:
       - backend
     restart: always
   backend:
-    image: ghcr.io/rust-cms/rcms:v0.1.1
+    image: ghcr.io/rust-cms/rcms:v0.1.2
     ports:
       - "80:80"
     environment: 
