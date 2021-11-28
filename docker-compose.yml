@@ -11,23 +11,23 @@ services:
       - backend
     restart: always
   backend:
-    image: ghcr.io/rust-cms/rcms:v0.1.2
+    image: ghcr.io/rust-cms/radical:v0.1.2
     ports:
       - "80:80"
     environment: 
       - APP_MYSQL_USERNAME=root
       - APP_MYSQL_PASSWORD=password
-      - APP_MYSQL_URL=rcms-db
+      - APP_MYSQL_URL=radical-db
       - APP_MYSQL_DATABASE=rustcms
       - APP_MYSQL_PORT=3306
       - APP_BIND_ADDRESS=0.0.0.0
       - APP_BIND_PORT=80
       - APP_MAX_REQ=100
-    command: ["./wait-for-it.sh", "rcms-db:3306", "-t", "0", "--", "rcms"]
+    command: ["./wait-for-it.sh", "radical-db:3306", "-t", "0", "--", "radical"]
     restart: always
   # This section here is optional if you have your own database. We use this for the time being.
   db:
-    container_name: rcms-db
+    container_name: radical-db
     image: mariadb:latest
     # Explicit ports are for debugging. Can be removed.
     ports:
