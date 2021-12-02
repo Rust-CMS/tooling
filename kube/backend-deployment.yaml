@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.service.type: LoadBalancer
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: backend
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.service.type: LoadBalancer
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: backend
+    spec:
+      containers:
+        - args:
+            - ./wait-for-it.sh
+            - db.default.svc.cluster.local:3306
+            - -t
+            - "0"
+            - --
+            - radical
+          env:
+            - name: APP_BIND_ADDRESS
+              value: 0.0.0.0
+            - name: APP_BIND_PORT
+              value: "80"
+            - name: APP_MAX_REQ
+              value: "100"
+            - name: APP_MYSQL_DATABASE
+              value: rustcms
+            - name: APP_MYSQL_PASSWORD
+              value: password
+            - name: APP_MYSQL_PORT
+              value: "3306"
+            - name: APP_MYSQL_URL
+              value: db.default.svc.cluster.local
+            - name: APP_MYSQL_USERNAME
+              value: root
+          image: ghcr.io/rust-cms/radical:latest
+          name: backend
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
