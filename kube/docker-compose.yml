@@ -1,9 +1,14 @@
 version: '3'
 services:
   frontend:
-    build:
-      context: https://github.com/Rust-CMS/dashboard-cms
-      dockerfile: Dockerfile
+    image: spbills/gke-radical-deploy-frontend:v0.1.4
+    labels:
+      kompose.service.type: LoadBalancer
+    deploy:
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 512M
     ports:
       - "8080:8080"
     depends_on: 
@@ -11,30 +16,44 @@ services:
     restart: always
   backend:
     image: ghcr.io/rust-cms/radical:latest
+    labels:
+      kompose.service.type: LoadBalancer
+    deploy:
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 512M
     ports:
       - "80:80"
     environment: 
       - APP_MYSQL_USERNAME=root
       - APP_MYSQL_PASSWORD=password
-      - APP_MYSQL_URL=db
-      - APP_MYSQL_DATABASE=rustcms
+      - APP_MYSQL_URL=db.default.svc.cluster.local
+      - APP_MYSQL_DATABASE=radical
       - APP_MYSQL_PORT=3306
       - APP_BIND_ADDRESS=0.0.0.0
       - APP_BIND_PORT=80
       - APP_MAX_REQ=100
       - APP_JWT_KEY=B669681336E3D84E5BE598A92C524
-    command: ["./wait-for-it.sh", "db:3306", "-t", "0", "--", "radical"]
+    command: ["./wait-for-it.sh", "db.default.svc.cluster.local:3306", "-t", "0", "--", "radical"]
     restart: always
   # This section here is optional if you have your own database. We use this for the time being.
   db:
     container_name: radical-db
     image: mariadb:latest
+    labels:
+      - kompose.service.type=headless
+    deploy:
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 512M
     # Explicit ports are for debugging. Can be removed.
     ports:
       - "9095:3306"
     environment: 
       - MARIADB_ROOT_PASSWORD=password
-      - MARIADB_DATABASE=rustcms
+      - MARIADB_DATABASE=radical
     restart: always
     volumes: 
       - /var/lib/mysql

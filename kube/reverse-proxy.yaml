@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverse-proxy-tcp
+spec:
+    ports:
+        - name: "80"
+          port: 80
+          targetPort: 80
+    selector:
+        role: reverseproxy
+    type: LoadBalancer
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: reverseproxy-deployment
+    labels:
+        role: reverseproxy
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            role: reverseproxy
+    template:
+        metadata:
+            labels:
+                role: reverseproxy
+        spec:
+            containers:
+                - name: reverseproxy
+                  image: "nginx"
+                  resources: {}
+                  volumeMounts:
+                    - name: "nginx-config"
+                      mountPath: "/etc/nginx/nginx.conf"
+                      subPath: "nginx.conf"
+            volumes:
+                - name: "nginx-config"
+                  configMap:
+                    name: "nginx-config"

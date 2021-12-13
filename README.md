@@ -1,6 +1,41 @@
-WARNING: Tooling is currently in an unsupported stage. Radical is not deployable.
-
 # How to Install Radical
+
+## Kubernetes
+
+### Required Tech
+
+Kompose
+Kubernetes
+
+### Step 1: Choose a provider
+
+I use GKE standard with one node, as Autopilot for some reason charged me 10 bucks in a day.
+
+### Step 2: Get your connection details.
+
+This involves getting a kubectl profile setup.
+
+### Step 3: Build a version of the frontend.
+
+Clone the [frontend](https://github.com/Rust-CMS/dashboard-cms) and run `docker build --build-args APIURL=<API URL> .`
+
+After this, publish it somewhere (I put rustcms.org on DockerHub.)
+
+### Step 4: Edit the docker-compose.yml file.
+
+Remove `https://github.com/Rust-CMS/dashboard-cms` and add your URL.
+
+Change the database password.
+
+Change the APP_JWT_KEY env variable.
+
+Run `kompose convert` in the working directory.
+
+### Step 5: Deploy!
+
+Run `./redeploy.sh`.
+
+## Docker Compose
 
 ## Step 1
 
@@ -19,6 +54,8 @@ Run: `git clone git@github.com:Rust-CMS/tooling.git && cd tooling`
 Edit the `docker-compose.yml` file with an editor of your choice. (If you are on Ubuntu, do `nano docker-compose.yml`)
 
 Change the `args` for the `frontend` to have the IP/domain name of your server. This is the url for the API.
+
+In the `backend` section, change the address to the address of your database. It is by default set to a kubernetes setup.
 
 ## Step 4
 

@@ -38,10 +38,12 @@ spec:
               value: 0.0.0.0
             - name: APP_BIND_PORT
               value: "80"
+            - name: APP_JWT_KEY
+              value: B669681336E3D84E5BE598A92C524
             - name: APP_MAX_REQ
               value: "100"
             - name: APP_MYSQL_DATABASE
-              value: rustcms
+              value: radical
             - name: APP_MYSQL_PASSWORD
               value: password
             - name: APP_MYSQL_PORT
@@ -54,6 +56,9 @@ spec:
           name: backend
           ports:
             - containerPort: 80
-          resources: {}
+          resources:
+            limits:
+              cpu: 50m
+              memory: "536870912"
       restartPolicy: Always
 status: {}

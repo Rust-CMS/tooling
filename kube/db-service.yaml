@@ -3,6 +3,7 @@ kind: Service
 metadata:
   annotations:
     kompose.cmd: kompose convert
+    kompose.service.type: headless
     kompose.version: 1.26.0 (40646f47)
   creationTimestamp: null
   labels:
@@ -16,5 +17,6 @@ spec:
       targetPort: 3306
   selector:
     io.kompose.service: db
+  type: ClusterIP
 status:
   loadBalancer: {}

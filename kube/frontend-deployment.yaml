@@ -26,10 +26,13 @@ spec:
         io.kompose.service: frontend
     spec:
       containers:
-        - image: spbills/gke-radical-deploy-frontend:latest
+        - image: spbills/gke-radical-deploy-frontend:v0.1.4
           name: frontend
           ports:
             - containerPort: 8080
-          resources: {}
+          resources:
+            limits:
+              cpu: 50m
+              memory: "536870912"
       restartPolicy: Always
 status: {}
