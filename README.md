@@ -4,8 +4,8 @@
 
 ### Required Tech
 
-Kompose
-Kubernetes
+- Kompose
+- Kubernetes
 
 ### Step 1: Choose a provider
 
