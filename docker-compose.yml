@@ -2,7 +2,7 @@ version: '3'
 services:
   frontend:
     build:
-      context: https://github.com/Rust-CMS/dashboard-cms
+      context: https://github.com/Rust-CMS/dashboard-cms.git#main
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
@@ -12,7 +12,7 @@ services:
   backend:
     image: ghcr.io/rust-cms/radical:latest
     ports:
-      - "80:80"
+      - "9090:80"
     environment: 
       - APP_MYSQL_USERNAME=root
       - APP_MYSQL_PASSWORD=password
